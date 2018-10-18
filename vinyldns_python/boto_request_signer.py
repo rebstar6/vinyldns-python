@@ -31,14 +31,14 @@ class BotoRequestSigner(object):
     def __init__(self, index_url, access_key, secret_access_key):
         url = urlparse.urlparse(index_url)
         self.boto_connection = DynamoDBConnection(
-            host = url.hostname,
-            port = url.port,
-            aws_access_key_id = access_key,
-            aws_secret_access_key = secret_access_key,
-            is_secure = False)
+            host=url.hostname,
+            port=url.port,
+            aws_access_key_id=access_key,
+            aws_secret_access_key=secret_access_key,
+            is_secure=False)
 
     @staticmethod
-    def canonical_date(headers):
+    def __canonical_date(headers):
         """Derive canonical date (ISO 8601 string) from headers if possible,
            or synthesize it if no usable header exists."""
         iso_format = u'%Y%m%dT%H%M%SZ'
@@ -72,7 +72,7 @@ class BotoRequestSigner(object):
 
         auth_handler = self.boto_connection._auth_handler
 
-        timestamp = BotoRequestSigner.canonical_date(headers)
+        timestamp = BotoRequestSigner.__canonical_date(headers)
         request.timestamp = timestamp[0:8]
 
         request.region_name = u'us-east-1'
